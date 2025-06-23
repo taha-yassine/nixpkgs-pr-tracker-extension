@@ -1,0 +1,25 @@
+{
+  "name": "nixpkgs-tracker-extension",
+  "version": "0.1.0",
+  "description": "Nixpkgs PR tracker browser extension.",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "prebuild": "pnpm run clean && mkdir -p dist/chrome/options dist/firefox/options",
+    "build:js:chrome": "esbuild src/content_script.ts src/options/options.ts --bundle --outdir=dist/chrome --platform=browser",
+    "build:assets:chrome": "cp src/manifest.chrome.json dist/chrome/manifest.json && cp src/options/options.html dist/chrome/options/options.html",
+    "build:chrome": "pnpm build:js:chrome && pnpm build:assets:chrome",
+    "build:js:firefox": "esbuild src/content_script.ts src/options/options.ts --bundle --outdir=dist/firefox --platform=browser",
+    "build:assets:firefox": "cp src/manifest.firefox.json dist/firefox/manifest.json && cp src/options/options.html dist/firefox/options/options.html",
+    "build:firefox": "pnpm build:js:firefox && pnpm build:assets:firefox",
+    "build": "pnpm prebuild && pnpm build:chrome && pnpm build:firefox",
+    "watch:js:chrome": "pnpm build:js:chrome -- --watch",
+    "watch:js:firefox": "pnpm build:js:firefox -- --watch",
+    "watch": "pnpm watch:js:chrome & pnpm watch:js:firefox"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.246",
+    "esbuild": "^0.19.4",
+    "typescript": "^5.2.2"
+  }
+} 

@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Nixpkgs PR Tracker",
+  "version": "0.1.0",
+  "description": "Shows which branch a Nixpkgs PR is merged into.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.github.com/",
+    "https://github.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content_script.js"]
+    }
+  ],
+  "action": {
+    "default_title": "Nixpkgs PR Tracker"
+  },
+  "options_page": "options/options.html"
+} 

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Nixpkgs Tracker Options</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 1em;
+      width: 300px;
+    }
+    .form-group {
+      margin-bottom: 1em;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5em;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5em;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 0.5em 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Nixpkgs Tracker Settings</h1>
+  <div class="form-group">
+    <label for="token">GitHub Access Token</label>
+    <input type="text" id="token" name="token" placeholder="Enter your GitHub token">
+  </div>
+  <button id="save">Save</button>
+  <div id="status" style="margin-top: 1em;"></div>
+
+  <script src="options.js"></script>
+</body>
+</html> 
