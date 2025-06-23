@@ -1,5 +1,7 @@
 # Nixpkgs Tracker Extension
 
+![demo](./assets/demo.gif)
+
 Browser extension to show which branch a Nixpkgs PR is merged into.
 
 Based on [nixpkgs-tracker](https://github.com/ocfox/nixpkgs-tracker).
