@@ -175,5 +175,3 @@ function showSuccessState(pill: HTMLElement, mergedBranch: string) {
 
 main();
 document.addEventListener("turbo:load", main);
-document.addEventListener("pjax:end", main);
-
