@@ -105,7 +105,7 @@ function restoreOriginalPill(pill: HTMLElement, text: string | null) {
         clearInterval(animationInterval);
         animationInterval = undefined;
     }
-    const container = pill.querySelector('#nixpkgs-tracker-text-container');
+    const container = pill.querySelector('#nprt-text-container');
     if (container) {
         pill.replaceChild(document.createTextNode(text || ''), container);
     }

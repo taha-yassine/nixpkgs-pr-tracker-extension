@@ -1,4 +1,4 @@
-# Nixpkgs Tracker Extension
+# Nixpkgs PR Tracker Extension
 
 ![demo](./assets/demo.gif)
 
