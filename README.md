@@ -40,18 +40,18 @@ To automatically rebuild the extension when you make changes to the source code,
 pnpm watch
 ```
 
-## Installation
+### Install
 
-### Chrome
+#### Chrome
 
 1.  Navigate to `chrome://extensions`.
 2.  Enable "Developer mode".
 3.  Click "Load unpacked".
-4.  Select the `chrome` directory in this repository.
+4.  Select the `dist/chrome` directory in this repository.
 
-### Firefox
+#### Firefox
 
 1.  Navigate to `about:debugging`.
 2.  Click "This Firefox".
 3.  Click "Load Temporary Add-on...".
-4.  Select the `firefox/manifest.json` file in this repository.
+4.  Select the `dist/firefox/manifest.json` file in this repository.
