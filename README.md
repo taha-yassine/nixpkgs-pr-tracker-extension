@@ -6,8 +6,8 @@ Browser extension to show which branch a Nixpkgs PR is merged into.
 
 Based on [nixpkgs-tracker](https://github.com/ocfox/nixpkgs-tracker).
 
-- [Get from Chrome Web Store](https://chromewebstore.google.com/detail/nixpkgs-tracker/jgjgjgjgjgjgjgjgjgjgjgjgjgjgjgjg)
-- [Get from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/nixpkgs-tracker/)
+- [Get from Chrome Web Store](https://chromewebstore.google.com/detail/dfegdjaaeknfijoampgepckelacpblje)
+- [Get from Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/nixpkgs-pr-tracker/)
 
 ## Features
 
