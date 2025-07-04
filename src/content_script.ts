@@ -21,54 +21,74 @@ async function main() {
     return;
   }
 
-  const mergedPill = document.querySelector<HTMLElement>(".State--merged");
+  const mergedPills = Array.from(
+    document.querySelectorAll<HTMLElement>(".State--merged")
+  ).slice(0, 2);
 
-  if (!mergedPill) {
-    // PR is not merged, exiting.
-    return;
-  }
+  const pillsToProcess: {
+    pill: HTMLElement;
+    originalText: string | null;
+    textNode: Node;
+  }[] = [];
 
-  if (mergedPill.classList.contains("nprt-hijacked")) {
-    return;
-  }
-  mergedPill.classList.add("nprt-hijacked");
+  for (const mergedPill of mergedPills) {
+    if (mergedPill.classList.contains("nprt-hijacked")) {
+      continue;
+    }
+    mergedPill.classList.add("nprt-hijacked");
 
-  let textNodeToModify: Node | null = null;
-  for (let i = 0; i < mergedPill.childNodes.length; i++) {
-    const child = mergedPill.childNodes[i];
-    if (
-      child.nodeType === Node.TEXT_NODE &&
-      child.textContent &&
-      child.textContent.trim().length > 0
-    ) {
-      textNodeToModify = child;
-      break;
+    let textNodeToModify: Node | null = null;
+    for (let i = 0; i < mergedPill.childNodes.length; i++) {
+      const child = mergedPill.childNodes[i];
+      if (
+        child.nodeType === Node.TEXT_NODE &&
+        child.textContent &&
+        child.textContent.trim().length > 0
+      ) {
+        textNodeToModify = child;
+        break;
+      }
+    }
+    if (textNodeToModify) {
+      pillsToProcess.push({
+        pill: mergedPill,
+        originalText: textNodeToModify.textContent,
+        textNode: textNodeToModify,
+      });
+    } else {
+      mergedPill.classList.remove("nprt-hijacked");
     }
   }
 
-  if (!textNodeToModify) {
-      // Could not find text to modify in merged pill.
-      mergedPill.classList.remove("nprt-hijacked");
-      return;
+  if (pillsToProcess.length === 0) {
+    return;
   }
 
-  const originalText = textNodeToModify.textContent;
-
-  showLoadingState(mergedPill, textNodeToModify);
+  pillsToProcess.forEach(({ pill, textNode }) => {
+    showLoadingState(pill, textNode);
+  });
 
   const prNumber = getPrNumber();
   if (!prNumber) {
-    // Could not get PR number.
-    restoreOriginalPill(mergedPill, originalText);
+    pillsToProcess.forEach(({ pill, originalText }) => {
+      restoreOriginalPill(pill, originalText);
+    });
     return;
   }
 
   const prDetailsResult = await getPRDetails(prNumber);
   if (typeof prDetailsResult === "object" && "status" in prDetailsResult) {
-    if (prDetailsResult.status === 403 && prDetailsResult.rateLimitRemaining === 0) {
-      showErrorState(mergedPill, "Rate limit exceeded");
+    if (
+      prDetailsResult.status === 403 &&
+      prDetailsResult.rateLimitRemaining === 0
+    ) {
+      pillsToProcess.forEach(({ pill }) =>
+        showErrorState(pill, "Rate limit exceeded")
+      );
     } else {
-      restoreOriginalPill(mergedPill, originalText);
+      pillsToProcess.forEach(({ pill, originalText }) =>
+        restoreOriginalPill(pill, originalText)
+      );
     }
     return;
   }
@@ -81,8 +101,13 @@ async function main() {
     );
 
     if (typeof isMergedResult === "object" && "status" in isMergedResult) {
-      if (isMergedResult.status === 403 && isMergedResult.rateLimitRemaining === 0) {
-        showErrorState(mergedPill, "Rate limit exceeded");
+      if (
+        isMergedResult.status === 403 &&
+        isMergedResult.rateLimitRemaining === 0
+      ) {
+        pillsToProcess.forEach(({ pill }) =>
+          showErrorState(pill, "Rate limit exceeded")
+        );
         return;
       }
       continue;
@@ -94,9 +119,11 @@ async function main() {
   }
 
   if (lastMergedBranch) {
-    showSuccessState(mergedPill, lastMergedBranch);
+    pillsToProcess.forEach(({ pill }) => showSuccessState(pill, lastMergedBranch!));
   } else {
-    restoreOriginalPill(mergedPill, originalText);
+    pillsToProcess.forEach(({ pill, originalText }) =>
+      restoreOriginalPill(pill, originalText)
+    );
   }
 }
 
