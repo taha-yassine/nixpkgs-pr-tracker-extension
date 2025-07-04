@@ -1,6 +1,6 @@
 {
   "name": "nixpkgs-pr-tracker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Nixpkgs PR tracker browser extension.",
   "private": true,
   "scripts": {
