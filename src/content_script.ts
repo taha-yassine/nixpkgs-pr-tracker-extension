@@ -8,7 +8,7 @@ const branches = [
   "nixos-unstable",
 ];
 
-let animationInterval: number | undefined;
+const animationIntervals = new WeakMap<HTMLElement, number>();
 
 function getPrNumber(): string | null {
   const prNumber = document.querySelector(".gh-header-title span")?.textContent?.replace("#", "");
@@ -128,24 +128,21 @@ async function main() {
 }
 
 function restoreOriginalPill(pill: HTMLElement, text: string | null) {
-    if (animationInterval) {
-        clearInterval(animationInterval);
-        animationInterval = undefined;
-    }
-    const container = pill.querySelector('#nprt-text-container');
+    const container = pill.querySelector<HTMLElement>('.nprt-text-container');
     if (container) {
+        const intervalId = animationIntervals.get(container);
+        if (intervalId !== undefined) {
+            clearInterval(intervalId);
+            animationIntervals.delete(container);
+        }
         pill.replaceChild(document.createTextNode(text || ''), container);
     }
     pill.classList.remove("nprt-hijacked");
 }
 
 function showLoadingState(pill: HTMLElement, textNode: Node) {
-    if (animationInterval) {
-        clearInterval(animationInterval);
-    }
-
     const loadingContainer = document.createElement('span');
-    loadingContainer.id = 'nprt-text-container';
+    loadingContainer.classList.add('nprt-text-container');
     
     pill.replaceChild(loadingContainer, textNode);
 
@@ -174,28 +171,31 @@ function showLoadingState(pill: HTMLElement, textNode: Node) {
     }
 
     updateDots();
-    animationInterval = window.setInterval(updateDots, 500);
+    const intervalId = window.setInterval(updateDots, 500);
+    animationIntervals.set(loadingContainer, intervalId);
 }
 
 function showErrorState(pill: HTMLElement, message: string) {
   // TODO: Improve
-    if (animationInterval) {
-        clearInterval(animationInterval);
-        animationInterval = undefined;
-    }
-    const container = pill.querySelector<HTMLElement>('#nprt-text-container');
+    const container = pill.querySelector<HTMLElement>('.nprt-text-container');
     if (container) {
+        const intervalId = animationIntervals.get(container);
+        if (intervalId !== undefined) {
+            clearInterval(intervalId);
+            animationIntervals.delete(container);
+        }
         container.textContent = ` ${message}`;
     }
 }
 
 function showSuccessState(pill: HTMLElement, mergedBranch: string) {
-    if (animationInterval) {
-        clearInterval(animationInterval);
-        animationInterval = undefined;
-    }
-    const container = pill.querySelector<HTMLElement>('#nprt-text-container');
+    const container = pill.querySelector<HTMLElement>('.nprt-text-container');
     if(container) {
+        const intervalId = animationIntervals.get(container);
+        if (intervalId !== undefined) {
+            clearInterval(intervalId);
+            animationIntervals.delete(container);
+        }
         container.textContent = " Merged into " + mergedBranch;
     }
 }
