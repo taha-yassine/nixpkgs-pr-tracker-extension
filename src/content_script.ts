@@ -11,7 +11,7 @@ const branches = [
 const animationIntervals = new WeakMap<HTMLElement, number>();
 
 function getPrNumber(): string | null {
-  const prNumber = document.querySelector(".gh-header-title span")?.textContent?.replace("#", "");
+  const prNumber = document.querySelector('h1[data-component="PH_Title"]')?.childNodes[1]?.textContent?.replace("#", "");
   return prNumber ?? null; 
 }
 
@@ -22,7 +22,7 @@ async function main() {
   }
 
   const mergedPills = Array.from(
-    document.querySelectorAll<HTMLElement>(".State--merged")
+    document.querySelectorAll<HTMLElement>('span[data-status="pullMerged"]')
   ).slice(0, 2);
 
   const pillsToProcess: {
