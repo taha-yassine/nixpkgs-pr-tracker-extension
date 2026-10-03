@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Nixpkgs PR Tracker",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Shows which branch a Nixpkgs PR is merged into.",
   "permissions": [
     "storage"
