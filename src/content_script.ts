@@ -11,7 +11,9 @@ const branches = [
 const animationIntervals = new WeakMap<HTMLElement, number>();
 
 function getPrNumber(): string | null {
-  const prNumber = document.querySelector('h1[data-component="PH_Title"]')?.childNodes[1]?.textContent?.replace("#", "");
+  const prNumber = document
+    .querySelector('h1[data-component="PH_Title"]')
+    ?.parentNode?.childNodes[1]?.textContent?.replace("#", "");
   return prNumber ?? null; 
 }
 
